@@ -22,7 +22,7 @@ const MiniSidebar = () => {
             <Link>
               {" "}
               <img
-                src="src/utils/file-check-alt-1-svgrepo-com.svg"
+                src="src/utils/grid-svgrepo-com.svg"
                 width={20}
                 height={20}
               ></img>
@@ -32,7 +32,7 @@ const MiniSidebar = () => {
             <Link>
               {" "}
               <img
-                src="src/utils/stopwatch-svgrepo-com.svg"
+                src="src/utils/grid-svgrepo-com.svg"
                 width={20}
                 height={20}
               ></img>
@@ -42,7 +42,7 @@ const MiniSidebar = () => {
             <Link>
               {" "}
               <img
-                src="src/utils/data-element-infographic-deadline-time-graph-svgrepo-com.svg"
+                src="src/utils/grid-svgrepo-com.svg"
                 width={20}
                 height={20}
               ></img>
