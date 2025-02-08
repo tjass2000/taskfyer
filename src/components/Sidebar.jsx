@@ -1,6 +1,8 @@
 import React from "react";
+import { PolarAngleAxis, RadialBar, RadialBarChart } from "recharts";
 
 export const Sidebar = () => {
+  const data = [{ completed: 5, pending: 5 }];
   return (
     <div className="fixed right-0 top-[clac(100%-5rem)] h-full">
       <div className="basis-5rem">
@@ -29,10 +31,37 @@ export const Sidebar = () => {
         <div className="">
           <h1>Radio Chart - Stacked</h1>
           <h1>January - June 2024</h1>
-          <div className="border-b-0 border-black border-2 h-12 w-24 flex flex-1 flex-row rounded-tl-full rounded-tr-full overflow-hidden">
+          {/* <div className="border-b-0 border-black border-2 h-12 w-24 flex flex-1 flex-row rounded-tl-full rounded-tr-full overflow-hidden">
             <div className="bg-red-500 w-[60%] h-full"></div>
             <div className="bg-green-500 w-[40%] h-full"></div>
-          </div>
+          </div> */}
+          <RadialBarChart
+            data={data}
+            endAngle={180}
+            innerRadius={80}
+            outerRadius={130}
+            width={300}
+            height={300}
+            cx={150}
+            cy={150}
+          >
+            <RadialBar
+              background
+              dataKey="completed"
+              stackId="a"
+              cornerRadius={5}
+              fill="#f54955"
+              className="stroke-transparent stroke-2"
+            />
+            <RadialBar
+              background
+              dataKey="pending"
+              stackId="b"
+              cornerRadius={5}
+              fill="#49f558"
+              className="stroke-transparent stroke-2"
+            />
+          </RadialBarChart>
           <div>
             <h2>Trending up by 5.2% this month</h2>
             <h2>Showing total visitors for the last 6 months</h2>
