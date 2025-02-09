@@ -10,7 +10,7 @@ function App() {
       <MiniSidebar />
       <div className="flex-1 flex flex-col">
         <Header />
-        <div className="flex-1 flex pr-[20rem] pb-[1.5rem] h-full">
+        <div className="flex pr-[20rem] pb-[1.5rem] h-full">
           <MainContent />
           <Sidebar />
         </div>

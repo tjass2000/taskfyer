@@ -15,7 +15,7 @@ const Header = () => {
         <p className="text-sm">Please login or register to view your tasks</p>
       </div>
       <div className="h-[50px] flex items-center gap-[10.4rem]">
-        <button className="rounded-3xl px-3 py-2 bg-cyan-600 text-white w-48">
+        <button className="rounded-3xl px-3 py-2 bg-cyan-600 text-white w-48 hover:bg-cyan-700 transition duration-700 ease-in-out">
           Login / Register
         </button>
         <div className="flex gap-4 items-center">
