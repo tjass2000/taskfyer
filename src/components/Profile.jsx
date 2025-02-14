@@ -3,7 +3,7 @@ import React from "react";
 const Profile = () => {
   return (
     <div>
-      <div className="flex flex-1 flex-row bg-gray-200 rounded-2xl p-3">
+      <div className="flex flex-1 flex-row bg-gray-100 rounded-2xl p-3">
         <div className="flex bg-blue-950 w-[60px] h-[60px] rounded-[50%] justify-center items-center">
           <img
             src="src/assets/logo.png"
