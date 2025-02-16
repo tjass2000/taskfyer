@@ -1,0 +1,27 @@
+{
+  "name": "taskfyer",
+  "version": "1.0.0",
+  "description": "This is an api for the taskfyer app",
+  "main": "app.js",
+  "scripts": {
+    "test": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tjass2000/taskfyer.git"
+  },
+  "author": "Tejas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tjass2000/taskfyer/issues"
+  },
+  "homepage": "https://github.com/tjass2000/taskfyer#readme",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^7.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
