@@ -1,3 +1,4 @@
+const cookieParser = require("cookie-parser");
 const Users = require("../models/userModel");
 
 exports.getAllUsers = async (req, res) => {
@@ -8,6 +9,15 @@ exports.getAllUsers = async (req, res) => {
     res
       .status(400)
       .json({ status: "Failed", message: "Unable to get all users!" });
+  }
+};
+
+exports.getUser = async (req, res) => {
+  try {
+    const user = await Users.findById(req.params.id);
+    res.status(200).json({ status: "Success", data: { user } });
+  } catch (err) {
+    res.status(400).json({ status: "Failed", message: "Invalid user id!" });
   }
 };
 
