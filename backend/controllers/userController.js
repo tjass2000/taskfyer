@@ -1,4 +1,4 @@
-const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 const Users = require("../models/userModel");
 
 exports.getAllUsers = async (req, res) => {
@@ -25,7 +25,10 @@ exports.createUser = async (req, res) => {
   try {
     if (req.body) {
       const newUser = await Users.create(req.body);
-      res.status(201).json({ status: "Success", data: { newUser } });
+      const token = jwt.sign({ id: newUser._id }, "secret", {
+        expiresIn: "90000",
+      });
+      res.status(201).json({ status: "Success", token, data: { newUser } });
     }
   } catch (err) {
     res.status(400).json({ status: "Failed", message: err });
@@ -50,4 +53,11 @@ exports.deleteUser = async (req, res) => {
   } catch (err) {
     res.status(404).json({ status: "Failed", message: err });
   }
+};
+
+exports.loginUser = async (req, res) => {
+  try {
+    if (req.params.id) {
+    }
+  } catch (err) {}
 };
