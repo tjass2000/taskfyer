@@ -12,6 +12,9 @@ const sendToken = (id) => {
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   const allUsers = await Users.find({});
+  if (!allUsers) {
+    return next(new appError("No task found with that ID!!", 404));
+  }
   res.status(200).json({ status: "Success", data: { allUsers } });
   // res
   //   .status(400)
@@ -20,26 +23,33 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 
 exports.getUser = catchAsync(async (req, res, next) => {
   const user = await Users.findById(req.params.id);
+  if (!user) {
+    return next(new appError("No user found with that ID!!", 404));
+  }
   res.status(200).json({ status: "Success", data: { user } });
   // res.status(400).json({ status: "Failed", message: "Invalid user id!" });
 });
 
 exports.createUser = catchAsync(async (req, res, next) => {
-  if (req.body) {
-    const newUser = await Users.create(req.body);
-    const token = sendToken(newUser._id);
-    res.status(201).json({ status: "Success", token, data: { newUser } });
-  }
+  const newUser = await Users.create(req.body);
+  const token = sendToken(newUser._id);
+  res.status(201).json({ status: "Success", token, data: { newUser } });
   // res.status(400).json({ status: "Failed", message: err });
 });
 exports.updateUser = catchAsync(async (req, res, next) => {
   const updatedUser = await Users.findByIdAndUpdate(req.params.id, req.body);
+  if (!updatedUser) {
+    return next(new appError("No user found with that ID!!", 404));
+  }
   res.status(200).json({ status: "Success", data: { updatedUser } });
   // res.status(404).json({ status: "Failed", message: err });
 });
 
 exports.deleteUser = catchAsync(async (req, res, next) => {
   const deleteUser = await Users.findByIdAndDelete(req.params.id);
+  if (!deleteUser) {
+    return next(new appError("No user found with that ID!!", 404));
+  }
   res.status(204).json({
     status: "Success",
     message: null,
