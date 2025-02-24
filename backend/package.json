@@ -4,7 +4,8 @@
   "description": "This is an api for the taskfyer app",
   "main": "app.js",
   "scripts": {
-    "test": "nodemon server.js"
+    "start": "nodemon server.js",
+    "start:prod": "NODE_ENV=production nodemon server.js"
   },
   "repository": {
     "type": "git",

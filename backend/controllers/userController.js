@@ -12,9 +12,6 @@ const sendToken = (id) => {
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   const allUsers = await Users.find({});
-  if (!allUsers) {
-    return next(new appError("No task found with that ID!!", 404));
-  }
   res.status(200).json({ status: "Success", data: { allUsers } });
   // res
   //   .status(400)
