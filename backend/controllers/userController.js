@@ -1,3 +1,4 @@
+const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const Users = require("../models/userModel");
 const appError = require("../utils/appError");
@@ -57,16 +58,38 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
 exports.loginUser = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return new appError("Please provide an email and password!!", 400);
+    return next(new appError("Please provide an email and password!!", 400));
   }
   const user = await Users.findOne({ email }).select("+password");
   const isPassCorrect = await user.correctPassword(password, user.password);
   const token = sendToken(user.id);
   if (!user || !isPassCorrect) {
-    return appError("Incorrect Email or Password!!", 400);
+    return next(new appError("Incorrect Email or Password!!", 400));
   }
   res.status(200).json({ status: "success", token });
   // res
   //   .status(400)
   //   .json({ status: "error", message: "Unable to login the user!!" });
+});
+
+exports.protect = catchAsync(async (req, res, next) => {
+  //Fetching token and verifying if it is there
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  }
+  if (!token) {
+    return next(
+      new appError("You are not logged in!! Please log in to get access.", 401)
+    );
+  }
+  //Verification token
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  console.log(decoded);
+  //Check if user still exists
+
+  next();
 });

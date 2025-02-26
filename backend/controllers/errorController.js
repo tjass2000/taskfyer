@@ -11,16 +11,36 @@ const handleDuplicateFieldsDB = (err) => {
   return new appError(message, 400);
 };
 
+const handleValidationError = (err) => {
+  const errors = Object.values(err.errors).map((el) => el.message);
+  const message = `Invalid input data. ${errors.join(". ")}`;
+  return new appError(message, 400);
+};
+
+const handleJWTError = (err) => {
+  const message = "Invalid jwt token!! Please login again.";
+  return new appError(message, 401);
+};
+
 const sendErrorDev = (err, res) => {
-  res
-    .status(err.statusCode)
-    .json({ status: err.status, message: err.message, stack: err.stack });
+  res.status(err.statusCode).json({
+    status: err.status,
+    error: err,
+    message: err.message,
+    stack: err.stack,
+  });
 };
 
 const sendErrorProd = (error, res) => {
-  res
-    .status(error.statusCode)
-    .json({ status: error.status, message: error.message });
+  if (error.isOperational) {
+    res
+      .status(error.statusCode)
+      .json({ status: error.status, message: error.message });
+  } else {
+    res
+      .status(500)
+      .json({ status: "error", message: "Something went wrong!!" });
+  }
 };
 
 module.exports = (err, req, res, next) => {
@@ -36,6 +56,12 @@ module.exports = (err, req, res, next) => {
     }
     if (error.code === 11000) {
       error = handleDuplicateFieldsDB(error);
+    }
+    if (error.name === "ValidationError") {
+      error = handleValidationError(error);
+    }
+    if (error.name === "JsonWebTokenError") {
+      error = handleJWTError(error);
     }
     sendErrorProd(error, res);
   }

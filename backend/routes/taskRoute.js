@@ -2,16 +2,17 @@ const express = require("express");
 const router = express.Router();
 
 const taskController = require("../controllers/taskController");
+const userController = require("../controllers/userController");
 
 router
   .route("/")
-  .get(taskController.getAllTasks)
-  .post(taskController.createTask);
+  .get(userController.protect, taskController.getAllTasks)
+  .post(userController.protect, taskController.createTask);
 
 router
   .route("/:id")
-  .get(taskController.getTask)
-  .put(taskController.updateTask)
-  .delete(taskController.deleteTask);
+  .get(userController.protect, taskController.getTask)
+  .put(userController.protect, taskController.updateTask)
+  .delete(userController.protect, taskController.deleteTask);
 
 module.exports = router;
