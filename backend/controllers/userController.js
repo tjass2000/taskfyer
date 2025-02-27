@@ -88,8 +88,36 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
   //Verification token
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  console.log(decoded);
   //Check if user still exists
+  const user = await Users.findById(decoded.id);
+  if (!user) {
+    return next(
+      new appError(
+        "The user belonging to this token does no longer exist.",
+        401
+      )
+    );
+  }
 
+  if (user.checkResetPassword(decoded.iat)) {
+    return next(
+      new appError(
+        "User has recently changed password! Please login again.",
+        401
+      )
+    );
+  }
+  req.user = user;
   next();
 });
+
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new appError("You are not authorized to access this route!!", 403)
+      );
+    }
+    next();
+  };
+};

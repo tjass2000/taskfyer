@@ -5,15 +5,23 @@ const userController = require("../controllers/userController");
 
 router
   .route("/")
-  .get(userController.getAllUsers)
+  .get(
+    userController.protect,
+    userController.restrictTo("admin"),
+    userController.getAllUsers
+  )
   .post(userController.createUser);
 
 router.route("/login").post(userController.loginUser);
 
 router
   .route("/:id")
-  .get(userController.getUser)
-  .put(userController.updateUser)
-  .delete(userController.deleteUser);
+  .get(userController.protect, userController.getUser)
+  .put(userController.protect, userController.updateUser)
+  .delete(
+    userController.protect,
+    userController.restrictTo("admin"),
+    userController.deleteUser
+  );
 
 module.exports = router;
