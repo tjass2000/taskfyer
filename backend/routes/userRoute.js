@@ -28,4 +28,8 @@ router.route("/forgotPassword").post(userController.forgotPassword);
 
 router.route("/resetPassword/:token").put(userController.resetPassword);
 
+router
+  .route("/updatePassword")
+  .patch(userController.protect, userController.updatePassword);
+
 module.exports = router;
