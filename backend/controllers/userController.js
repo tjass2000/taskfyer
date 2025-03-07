@@ -18,6 +18,16 @@ const createSendToken = (user, statusCode, res) => {
   res.status(statusCode).json({ status: "success", token, data: { user } });
 };
 
+const filterObj = (obj, ...allowedFields) => {
+  const newObj = {};
+  Object.keys(obj).forEach((el) => {
+    if (allowedFields.includes(el)) {
+      newObj[el] = obj[el];
+    }
+  });
+  return newObj;
+};
+
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   const allUsers = await Users.find({});
   res.status(200).json({ status: "Success", data: { allUsers } });
@@ -42,6 +52,27 @@ exports.createUser = catchAsync(async (req, res, next) => {
   // res.status(201).json({ status: "Success", token, data: { newUser } });
   // res.status(400).json({ status: "Failed", message: err });
 });
+
+exports.updateMe = catchAsync(async (req, res, next) => {
+  //Create error if user posts password data
+  if (req.body.password) {
+    return next(
+      new appError(
+        "You cannot change password from this route. Please user /updatePassword!",
+        400
+      )
+    );
+  }
+  //Filter out sensitive data from body
+  const filteredPayload = filterObj(req.body, "name", "email");
+  //Update user document
+  const updatedUser = await Users.findByIdAndUpdate(
+    req.user.id,
+    filteredPayload
+  );
+  res.status(200).json({ status: "success", data: { user: updatedUser } });
+});
+
 exports.updateUser = catchAsync(async (req, res, next) => {
   const updatedUser = await Users.findByIdAndUpdate(req.params.id, req.body);
   if (!updatedUser) {
