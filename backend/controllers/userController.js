@@ -68,9 +68,18 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   //Update user document
   const updatedUser = await Users.findByIdAndUpdate(
     req.user.id,
-    filteredPayload
+    filteredPayload,
+    {
+      new: true,
+      runValidators: true,
+    }
   );
   res.status(200).json({ status: "success", data: { user: updatedUser } });
+});
+
+exports.deleteMe = catchAsync(async (req, res, next) => {
+  await Users.findByIdAndUpdate(req.user.id, { active: false });
+  res.status(204).json({ status: "success", data: null });
 });
 
 exports.updateUser = catchAsync(async (req, res, next) => {
