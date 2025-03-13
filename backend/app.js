@@ -1,5 +1,14 @@
 const express = require("express");
 const app = express();
+const rateLimit = require("express-rate-limit");
+
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  messsage: "Too many requests from this IP, please try in an hour!!",
+});
+
+app.use("/api", limiter);
 
 app.use(express.json());
 
