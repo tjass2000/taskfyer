@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
 
 const limiter = rateLimit({
   max: 100,
@@ -8,9 +9,13 @@ const limiter = rateLimit({
   messsage: "Too many requests from this IP, please try in an hour!!",
 });
 
+//Rate limiter
 app.use("/api", limiter);
 
-app.use(express.json());
+//Set security HTTP headers
+app.use(helmet());
+
+app.use(express.json({ limit: "10kb" }));
 
 const userRoute = require("./routes/userRoute");
 const taskRoute = require("./routes/taskRoute");
