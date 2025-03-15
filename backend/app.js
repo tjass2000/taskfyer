@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
 
 const limiter = rateLimit({
   max: 100,
@@ -15,7 +17,13 @@ app.use("/api", limiter);
 //Set security HTTP headers
 app.use(helmet());
 
+//Body parser
 app.use(express.json({ limit: "10kb" }));
+
+//Data sanitization against NoSQL query injection
+app.use(mongoSanitize());
+//Data sanitization against XSS
+app.use(xss());
 
 const userRoute = require("./routes/userRoute");
 const taskRoute = require("./routes/taskRoute");
